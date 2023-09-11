@@ -1,8 +1,11 @@
 import { defineStore } from 'pinia';
+import { useQuasar } from 'quasar';
+
+const $q = useQuasar()
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
-    isAuthenticated: true,
+    isAuthenticated: false,
   }),
   actions: {
     login() {
@@ -10,6 +13,14 @@ export const useAuthStore = defineStore('auth', {
     },
     logout() {
         this.isAuthenticated = false;
-    },
+        setInterval( () => {
+          $q.notify({
+            color: 'yellow-5',
+            textColor: 'white',
+            message: 'Realizando Logout',
+            position: 'top'
+          })
+      }, 2000)
   },
+}
 });

@@ -12,7 +12,7 @@
 const { configure } = require('quasar/wrappers');
 
 
-module.exports = configure(function (/* ctx */) {
+module.exports = configure(function (ctx) {
   return {
     eslint: {
       // fix: true,
@@ -30,7 +30,7 @@ module.exports = configure(function (/* ctx */) {
     // --> boot files are part of "main.js"
     // https://v2.quasar.dev/quasar-cli-vite/boot-files
     boot: [
-      
+      'main',
       'axios',
     ],
 
@@ -56,11 +56,15 @@ module.exports = configure(function (/* ctx */) {
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#build
     build: {
       target: {
-        browser: [ 'es2019', 'edge88', 'firefox78', 'chrome87', 'safari13.1' ],
+        browser: [ 'es2019', 'edge88', 'firefox78', 'chrome87', 'safari13.1', 'esnext' ],
         node: 'node16'
       },
-
-      vueRouterMode: 'hash', // available values: 'hash', 'history'
+      env: {
+        API_URL: ctx.dev
+        ? "http://localhost:3000/"
+        : "http://localhost:3000/",
+      },
+      vueRouterMode: 'history', // available values: 'hash', 'history'
       // vueRouterBase,
       // vueDevtools,
       // vueOptionsAPI: false,
@@ -88,6 +92,7 @@ module.exports = configure(function (/* ctx */) {
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#devServer
     devServer: {
       // https: true
+      port:8080,
       open: true // opens browser window automatically
     },
 
@@ -109,7 +114,7 @@ module.exports = configure(function (/* ctx */) {
         'Notify'
       ]
     },
-
+    lang: 'pt-BR',
     // animations: 'all', // --- includes all animations
     // https://v2.quasar.dev/options/animations
     animations: [],

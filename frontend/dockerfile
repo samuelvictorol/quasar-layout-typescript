@@ -1,0 +1,18 @@
+FROM node:18
+
+WORKDIR /app
+
+COPY package*.json ./
+COPY yarn.lock ./
+
+# Instala as dependências usando o Yarn
+RUN yarn install
+
+# Instala o Quasar CLI globalmente
+RUN yarn global add @quasar/cli
+
+COPY . .
+
+EXPOSE 8080
+
+CMD [ "yarn", "quasar", "dev" ]

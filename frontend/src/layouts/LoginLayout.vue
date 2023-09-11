@@ -19,20 +19,20 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useQuasar } from 'quasar';
+import { useRouter } from 'vue-router'
+import { useAuthStore } from 'src/stores/authStore';
+
+const router = useRouter()
+const $q = useQuasar()
+const authStore = useAuthStore()
 
 const username = ref('')
 const password = ref('')
-const $q = useQuasar()
 
 function login () {
   if( username.value == 'admin' && password.value == 'admin' ) {
-    $q.notify({
-      message: 'Login efetuado com sucesso',
-      icon: 'check',
-      color: 'green',
-      position: 'top',
-      timeout: 2000
-    })
+    authStore.login()
+    router.push({ name: 'inicio' })
   } else {
     $q.notify({
           color: 'red-5',

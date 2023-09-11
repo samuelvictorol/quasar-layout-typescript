@@ -1,4 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap');
+// @import 'basa-vue/dist/css/app';
+
 .trace-yellow {
     width: 100%;
     height: 4px;
@@ -12,4 +14,111 @@ html {
 
 p, h1{
     margin: 0px 0px 0px 0px !important;
+}
+
+
+.panel-white {
+    background: #fff;    
+}
+
+.trace {
+    width: 100%;
+    height: 1.5px;
+    background-color: rgb(190, 190, 190);
+    opacity: .6;
+}
+
+.wrapper-row {
+    width: 100%;
+    gap: 1rem;
+}
+
+.q-select {
+    width: 16rem;
+}
+
+.q-input {
+    width: 25rem;
+}
+
+.q-btn {
+    min-width: 10%;
+    height: 2rem;
+}
+
+.btn-export {
+ 
+}
+
+.btn-yellow {
+    color: #fff;
+    background-color: #f39200;
+}
+
+.btn-green {
+    color: #fff;
+    background-color:  #449d44;
+}
+
+.btn-yellow{
+    color: #fff;
+    background-color: #f39200;
+}
+
+.btn-clear {
+    border: 1px solid #449d44;
+    color: #449d44;
+    background-color: #fff;
+}
+
+.btn-blue {
+    color: #fff;
+    background-color: #255fb1;
+}
+
+.bg-header-table{
+    background-color: #e9ecef;
+}
+
+.q-table {
+    width: 100%!important;
+}
+
+.text-green{
+    color: #1b651c!important;
+    font-size: 12px;
+}
+
+.text-h5 {
+    opacity: .8;
+}
+
+.toggle-wrapper {
+    position: relative;
+    // border: 1px solid rgba(143, 143, 143, 0.61) !important;
+    border-radius: 4px;
+    width: 8rem!important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #569f00;
+    font-weight: bold;
+}
+
+.toggle-label {
+    position: absolute;
+    top: -4px;
+    left: 20px;
+    width: 100%;
+    color: black;
+    opacity: .5;
+}
+
+.canal-atendimento-wrapper {
+    display: flex;
+    
+}
+
+.bold {
+    font-weight: bold;
 }

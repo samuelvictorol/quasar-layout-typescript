@@ -1,13 +1,49 @@
-import { RouteRecordRaw } from 'vue-router';
+import { useAuthStore } from 'src/stores/authStore';
+import { RouteRecordRaw, useRoute, useRouter } from 'vue-router';
+import { useBreadcrumbStore } from 'src/stores/breadcrumbStore';
+
+
+const isAuthenticatedGuard = () => {
+  const authStore = useAuthStore()
+  if (authStore.isAuthenticated) {
+    return true
+  } else {
+    return false
+  }
+}
+const setBreadcrumb = (pathName: string, childName: string) => {
+  if(!isAuthenticatedGuard) {
+    return false
+  }
+  useBreadcrumbStore().setBreadcrumb(pathName)
+  if(childName != ''){
+    useBreadcrumbStore().pullBreadcrumbChild(childName)
+  }
+  return true
+}
+
+const pullChild = (childName: string) => {
+  useBreadcrumbStore().pullBreadcrumbChild(childName)
+}
 
 const routes: RouteRecordRaw[] = [
   {
     path: '',
+    name: 'login',
     component: () => import('layouts/LoginLayout.vue'),
   },
-
-  // Always leave this as last one,
-  // but you can also remove it
+  {
+    path: '/',
+    name: 'mainlayout',
+    beforeEnter: isAuthenticatedGuard,
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      { name: 'inicio', beforeEnter: () => { setBreadcrumb('inicio', '') } , path: '/inicio', component: () => import('pages/IndexPage.vue') },
+      { name: 'gptransacao', beforeEnter: () => { setBreadcrumb('tarifas', 'Grupos de Transação') }, path: '/gptransacao', component: () => import('pages/grupo-transacoes/ConsultarGT.vue') },
+      { name: 'incluir-gptransacao', beforeEnter: () => { pullChild('Incluir') }, path: '/incluir-gptransacao', component: () => import('pages/grupo-transacoes/IncluirGT.vue') },
+      { name: 'pacoteservico', beforeEnter: () => { setBreadcrumb('tarifas', 'Pacotes de Serviços') } , path: '/pacoteservico', component: () => import('pages/pacote-servicos/ConsultarPctServ.vue') },
+    ]
+  },
   {
     path: '/:catchAll(.*)*',
     component: () => import('pages/ErrorNotFound.vue'),

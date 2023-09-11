@@ -1,25 +1,39 @@
-// Quasar SCSS (& Sass) Variables
-// --------------------------------------------------
-// To customize the look and feel of this app, you can override
-// the Sass/SCSS variables found in Quasar's source Sass/SCSS files.
+// @import "basa-vue/dist/css/colors";
 
-// Check documentation for full list of Quasar variables
+// $primary: $basa-primary-2;
+// $secondary: $basa-primary-3;
+// $accent: $basa-tertiary-1;
+// $dark: $basa-grey-12;
+// $positive: $basa-secondary-3;
+// $negative: $basa-secondary-4;
+// $info: $basa-grey-6;
+// $warning: $basa-tertiary-2;
 
-// Your own variables (that are declared here) and Quasar's own
-// ones will be available out of the box in your .vue/.scss/.sass files
+$basa-primary-1: #569f00 !default;
+$basa-primary-2: #008B2E !default;
+$basa-primary-3: #396406 !default;
+$basa-primary-4: #dff1c9 !default;
 
-// It's highly recommended to change the default colors
-// to match your app's branding.
-// Tip: Use the "Theme Builder" on Quasar's documentation website.
+$basa-secondary-1: #afd1ff;
+$basa-secondary-2: #0d3872;
+$basa-secondary-3: #2f80ed;
+$basa-secondary-4: #da1a00;
 
-$primary   : #1976D2;
-$secondary : #26A69A;
-$accent    : #9C27B0;
+$basa-tertiary-1: #f8d104;
+$basa-tertiary-2: #ffef98;
+$basa-tertiary-3: #decb64;
+$basa-tertiary-4: #c0a30c;
 
-$dark      : #1D1D1D;
-$dark-page : #121212;
-
-$positive  : #21BA45;
-$negative  : #C10015;
-$info      : #31CCEC;
-$warning   : #F2C037;
+$basa-grey-1: #ffffff;
+$basa-grey-2: #f8f9fa;
+$basa-grey-3: #f1f3f5;
+$basa-grey-4: #e9ecef;
+$basa-grey-5: #dee2e6;
+$basa-grey-6: #ced4da;
+$basa-grey-7: #adb5bd;
+$basa-grey-8: #868e96;
+$basa-grey-9: #495057;
+$basa-grey-10: #343a40;
+$basa-grey-11: #212529;
+$basa-grey-12: #1d1d1d;
+$basa-grey-13: #000000;
