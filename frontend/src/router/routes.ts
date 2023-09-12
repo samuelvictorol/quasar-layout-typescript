@@ -1,5 +1,5 @@
 import { useAuthStore } from 'src/stores/authStore';
-import { RouteRecordRaw, useRoute, useRouter } from 'vue-router';
+import { RouteRecordRaw } from 'vue-router';
 import { useBreadcrumbStore } from 'src/stores/breadcrumbStore';
 
 
