@@ -25,6 +25,9 @@ export const useBreadcrumbStore = defineStore('breadcrumb', {
           tempBreadcrumb.name = 'Tarifas'
           tempBreadcrumb.icon = 'src/assets/icons/bd-tarifas.svg'
           break
+        case 'parametros':
+          tempBreadcrumb.name = 'Parâmetros'
+          tempBreadcrumb.icon = 'src/assets/icons/bd-parametros.svg'
         default:
           break
       }

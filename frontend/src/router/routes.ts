@@ -42,6 +42,8 @@ const routes: RouteRecordRaw[] = [
       { name: 'gptransacao', beforeEnter: () => { setBreadcrumb('tarifas', 'Grupos de Transação') }, path: '/gptransacao', component: () => import('pages/grupo-transacoes/ConsultarGT.vue') },
       { name: 'incluir-gptransacao', beforeEnter: () => { pullChild('Incluir') }, path: '/incluir-gptransacao', component: () => import('pages/grupo-transacoes/IncluirGT.vue') },
       { name: 'pacoteservico', beforeEnter: () => { setBreadcrumb('tarifas', 'Pacotes de Serviços') } , path: '/pacoteservico', component: () => import('pages/pacote-servicos/ConsultarPctServ.vue') },
+      { name: 'parametros-tecnicos', beforeEnter: () => { setBreadcrumb('parametros', 'Parâmetros Técnicos') } , path: '/parametros-tecnicos', component: () => import('pages/parametros/ConsultarParametrosTecnicos.vue') },
+      { name: 'parametros-negociais', beforeEnter: () => { setBreadcrumb('parametros', 'Parâmetros Negociais') } , path: '/parametros-negociais', component: () => import('pages/parametros/ConsultarParametrosNegociais.vue') },
     ]
   },
   {

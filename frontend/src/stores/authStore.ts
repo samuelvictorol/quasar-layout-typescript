@@ -13,14 +13,6 @@ export const useAuthStore = defineStore('auth', {
     },
     logout() {
         this.isAuthenticated = false;
-        setInterval( () => {
-          $q.notify({
-            color: 'yellow-5',
-            textColor: 'white',
-            message: 'Realizando Logout',
-            position: 'top'
-          })
-      }, 2000)
-  },
+      },
 }
 });

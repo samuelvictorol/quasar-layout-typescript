@@ -114,10 +114,15 @@
             </q-item-section>
             <img v-if="!miniState" class="arrow-down" src="src/assets/icons/arrow-down.svg" alt="abrir submenus Parâmetros">
           </q-item>
-          <div v-if="smParametros">
+          <div id="submenu" v-if="smParametros">
             <q-item clickable v-ripple>
               <q-item-section>
-                Submenu content for Parâmetros
+                <div >
+                  <ul>
+                    <li><router-link class="router-link" to="/parametros-tecnicos">Parâmetros Técnicos</router-link></li>
+                    <li><router-link class="router-link" to="/parametros-negociais">Parâmetros Negociais</router-link></li>
+                  </ul>
+                </div>
               </q-item-section>
             </q-item>
           </div>
