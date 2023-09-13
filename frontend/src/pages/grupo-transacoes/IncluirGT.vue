@@ -9,45 +9,39 @@
             <div class="incluirgp-menu-item">
                 TRANSAÇÕES
             </div>
-            <div class="incluirgp-menu-item">
-                REGRA DE TARIFAÇÃO
-            </div>
         </div>
     </section>
 <!-- TELA DADODS DO GRUPO -->
     <section v-if="menu.dadosgrupo" class="panel-white column q-mx-lg q-pa-md">
         <h1 class="text-h6">Dados Gerais do Grupo de Transação</h1>
         <div class="row q-gutter-sm q-mt-sm q-mb-md">
-            <q-select outlined v-model="categoriaGrupo" :options="categoriaGrupoOptions" label="Categoria do Grupo" />
-            <q-select outlined v-model="tipoGrupo" :options="tipoGrupoOptions" label="Categoria do Grupo" />
-            <q-input outlined v-model="nomeGrupo" label="Nome do Grupo" placeholder="Digite aqui" />
+            <q-select v-model="categoriaGrupo" :options="categoriaGrupoOptions" label="Categoria do Grupo" />
+            <q-input v-model="nomeGrupo" label="Nome do Grupo" placeholder="Digite aqui" />
             <div class="toggle-wrapper">
                 <label class="toggle-label">Status do Grupo</label>
-                <q-toggle
-                    label="Ativado"
+                <div class="row items-center">
+                    <q-toggle
+                    color="green"
                     class="q-pt-sm"
                     v-model="statusGrupo"
-                    color="green" 
                     size="md"
                     />
-                    
+                    <span class="q-pt-xs" :style="{ color: statusGrupo ? '#569f00' : '#45403e' }">
+                        <strong>{{ statusGrupo ? 'Ativado' : 'Desativado' }}</strong>
+                    </span>
+                </div>
             </div>
         </div>
-        <div class="row">
-            <div class="checkboxes-wrapper column q-mr-md">
-                <label class="q-ml-sm">Tipo de Pessoa</label>
-                <q-checkbox v-model="tipoPessoa" label="Pessoa Física" color="teal" />
-                <q-checkbox v-model="tipoPessoa" label="Pessoa Jurídica" color="teal" />
+        <div class="column">
+            <label class="q-ml-sm q-mt-md">Tipo de Pessoa</label>
+            <div class="checkboxes-wrapper row items-center">
+                <q-checkbox style="width: 10rem" v-model="tipoPessoa.pj" @click="checkboxTipoPessoa('pj')" label="Pessoa Jurídica" color="teal" />
+                <q-checkbox v-model="tipoPessoa.pf" @click="checkboxTipoPessoa('pf')" label="Pessoa Física" color="teal" />
             </div>
-            <div class="checkboxes-wrapper column q-mr-md">
-                <label class="q-ml-sm">Tipo de Conta</label>
-                <q-checkbox v-model="tipoPessoa" label="Conta Corrente" color="teal" />
-                <q-checkbox v-model="tipoPessoa" label="Conta Poupança" color="teal" />
-            </div>
-            <div class="checkboxes-wrapper column">
-                <label class="q-ml-sm">Titularidade</label>
-                <q-checkbox v-model="tipoPessoa" label="Conta Conjunta" color="teal" />
-                <q-checkbox v-model="tipoPessoa" label="Conta Individual" color="teal" />
+            <label class="q-ml-sm q-mt-md">Tipo de Conta</label>
+            <div class="checkboxes-wrapper row items-center">
+                <q-checkbox style="width: 10rem" v-model="tipoConta.cc" @click="checkboxTipoConta('cc')" label="Conta Corrente" color="teal" />
+                <q-checkbox v-model="tipoConta.cj" @click="checkboxTipoConta('cj')" label="Conta Poupança" color="teal" />
             </div>
         </div>
     </section>
@@ -80,51 +74,104 @@
     </template>
     </q-table>
 </section>
-<!-- TELA REGRA DE TARIFAÇÃO  -->
-<section v-if="menu.regraTarifacao" class="panel-white column q-mx-lg q-pa-md">
-    <h1 class="text-h6 q-py-md">Definir Regra de Tarifação</h1>
-    <div class="canal-atendimento-wrapper">
-        <div>
-            <q-checkbox v-model="exemploBool" label="Conta Individual" color="teal" />
-            <q-checkbox v-model="exemploBool" label="Conta Individual" color="teal" />
-            <q-checkbox v-model="exemploBool" label="Conta Individual" color="teal" />
-            <q-checkbox v-model="exemploBool" label="Conta Individual" color="teal" />
-            <q-checkbox v-model="exemploBool" label="Conta Individual" color="teal" />
-            <q-checkbox v-model="exemploBool" label="Conta Individual" color="teal" />
-            
-        </div>
-    </div>
-</section>
 <!-- BOTÕES VOLTAR/AVANÇAR -->
     <section class="panel-white q-mx-lg">
-        <div class="row q-gutter-sm q-pl-md q-pb-md">
+        <div class="row q-gutter-sm q-pt-xs q-pl-md q-pb-md">
             <q-btn class="btn-clear" label="Voltar" />
-            <q-btn class="btn-green" label="Avançar" />
+            <q-btn class="btn-green" @click="incluir" label="Avançar" />
         </div>
     </section>
 </q-page>
 </template>
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useQuasar } from 'quasar';
 
-const exemploBool = ref(true)
+const $q = useQuasar()
 
-const menu = {
+const menu = ref({
     dadosgrupo: true,
     transacoes: false,
-    regraTarifacao: false
-}
+})
 
 const categoriaGrupo = ref(null)
-const tipoGrupo = ref(null) 
 const nomeGrupo = ref('')
 const statusGrupo = ref(true)
-const tipoPessoa = ref('pj')
+const tipoPessoa = ref({
+    pf: false,
+    pj: false,
+})
+const tipoConta = ref({
+    cj: false,
+    cc: false
+})
+
+function checkboxTipoPessoa (tipo: string) {
+    if (tipo == 'pf'){
+        tipoPessoa.value.pf = true
+        tipoPessoa.value.pj = false
+    } else {
+        tipoPessoa.value.pf = false
+        tipoPessoa.value.pj = true
+    }
+}
+
+function checkboxTipoConta (tipo: string) {
+    if (tipo == 'cc'){
+        tipoConta.value.cc = true
+        tipoConta.value.cj = false
+    } else {
+        tipoConta.value.cc = false
+        tipoConta.value.cj = true
+    }
+}
 
 const categoriaGrupoOptions = ['op1', 'op2', 'op3']
-const tipoGrupoOptions = ['op1', 'op2', 'op3']
+const notify = (text: string) => {
+    $q.notify({
+          color: 'red-5',
+          textColor: 'white',
+          icon: 'warning',
+          message: text,
+          position: 'top'
+        })
+}
 
 // tabela
+const incluir = () => {
+    if(tipoPessoa.value.pf == false && tipoPessoa.value.pj == false ) {
+        notify('Você deve selecionar ao menos um tipo de pessoa!')
+        return 
+    } else if(tipoConta.value.cj == false && tipoConta.value.cc == false) {
+        notify('Você deve selecionar ao menos um tipo de conta!')
+        return 
+    }
+    // Obejto a ser passado na requisição
+    let dadosGrupoObject = {
+        categoriaGrupo: categoriaGrupo.value,
+        nomeGrupo: nomeGrupo.value,
+        statusGrupo: statusGrupo.value,
+        tipoPessoa: tipoPessoa.value.pf == true ? 'Pessoa Física': 'Pessoa Jurídica',
+        tipoConta: tipoConta.value.cc == true ? 'Conta Corrente' : 'Conta Poupança'
+    }
+    if(validaObject(dadosGrupoObject, 1) && menu.value.dadosgrupo ) {
+        menu.value.dadosgrupo = false
+        menu.value.transacoes = true
+        return
+    }
+    alert('INCLUIU')
+}
+
+const validaObject = (incluirObject: any, tela: number) => {
+    if(
+        incluirObject.categoriaGrupo == null || incluirObject.nomeGrupo == '' ||
+        incluirObject.tipoPessoa == null || incluirObject.tipoConta == null 
+    ){
+        notify('Preencha todos os Campos')
+        return false
+    }
+    return true
+}
 
 const columns = [
   {
