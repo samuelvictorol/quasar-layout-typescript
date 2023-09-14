@@ -1,10 +1,10 @@
 <template>
     <div class="modal">
-        <div class="modal-header">
+        <div class="modal-header modal-status">
             <h1 class="text-h6 q-pa-md text-white">Desativar Grupo de Transação</h1>
             <div class="trace-yellow"></div>
-    </div>
-    <div class="modal-body">
+        </div>
+    <div class="modal-body modal-status">
         <p class="q-pa-md">Deseja desativar o "{{ props.row.nomeGrupo }}"?</p>
         <div class="row justify-center q-gutter-md q-mb-md">
             <q-btn class="btn-negative" label="Não" @click="fecharModal" />
@@ -32,7 +32,7 @@ function alterarStatus() {
 }
 </script>
 <style>
-.modal-header, .modal-body {
+.modal-status {
     width: 450px;
 }
 </style>

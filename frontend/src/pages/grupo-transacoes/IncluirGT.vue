@@ -3,10 +3,10 @@
 <!-- MENU -->
     <section class="menu q-ml-lg">
         <div class="row">
-            <div class="incluirgp-menu-item-selected">
+            <div :class="menu.dadosgrupo ? 'incluirgp-menu-item-selected' : 'incluirgp-menu-item' ">
                 DADOS DO GRUPO
             </div>
-            <div class="incluirgp-menu-item">
+            <div :class="menu.transacoes ? 'incluirgp-menu-item-selected' : 'incluirgp-menu-item' ">
                 TRANSAÇÕES
             </div>
         </div>
@@ -14,7 +14,7 @@
 <!-- TELA DADODS DO GRUPO -->
     <section v-if="menu.dadosgrupo" class="panel-white column q-mx-lg q-pa-md">
         <h1 class="text-h6">Dados Gerais do Grupo de Transação</h1>
-        <div class="row q-gutter-sm q-mt-sm q-mb-md">
+        <div class="row q-gutter-sm q-mb-sm">
             <q-select v-model="categoriaGrupo" :options="categoriaGrupoOptions" label="Categoria do Grupo" />
             <q-input v-model="nomeGrupo" label="Nome do Grupo" placeholder="Digite aqui" />
             <div class="toggle-wrapper">
@@ -33,12 +33,12 @@
             </div>
         </div>
         <div class="column">
-            <label class="q-ml-sm q-mt-md">Tipo de Pessoa</label>
+            <label class="q-mt-md low-opacity">Tipo de Pessoa *</label>
             <div class="checkboxes-wrapper row items-center">
                 <q-checkbox style="width: 10rem" v-model="tipoPessoa.pj" @click="checkboxTipoPessoa('pj')" label="Pessoa Jurídica" color="teal" />
                 <q-checkbox v-model="tipoPessoa.pf" @click="checkboxTipoPessoa('pf')" label="Pessoa Física" color="teal" />
             </div>
-            <label class="q-ml-sm q-mt-md">Tipo de Conta</label>
+            <label class="q-mt-md low-opacity">Tipo de Conta *</label>
             <div class="checkboxes-wrapper row items-center">
                 <q-checkbox style="width: 10rem" v-model="tipoConta.cc" @click="checkboxTipoConta('cc')" label="Conta Corrente" color="teal" />
                 <q-checkbox v-model="tipoConta.cj" @click="checkboxTipoConta('cj')" label="Conta Poupança" color="teal" />
@@ -50,8 +50,8 @@
     <q-input class="q-mt-md" filled v-model="nomeGrupo" label="Nome do Grupo de Transação" readonly />
     <h1 class="text-h6 q-py-md">Incluir transações ao Grupo</h1>
     <div class="row q-gutter-sm">
-        <q-btn class="btn-yellow" icon="add" label="Incluir Via Seleção" />
-        <q-btn class="btn-yellow" icon="add" label="Incluir Via Texto/CSV" />
+        <q-btn class="btn-yellow" @click="openModal('viaSelecao')" icon="add" label="Incluir Via Seleção" />
+        <q-btn class="btn-yellow" @click="openModal('copiaCola')" icon="add" label="Incluir Via Copia/Cola" />
     </div>
     <q-table
         class="q-mb-md q-mt-lg"
@@ -77,22 +77,32 @@
 <!-- BOTÕES VOLTAR/AVANÇAR -->
     <section class="panel-white q-mx-lg">
         <div class="row q-gutter-sm q-pt-xs q-pl-md q-pb-md">
-            <q-btn class="btn-clear" label="Voltar" />
-            <q-btn class="btn-green" @click="incluir" label="Avançar" />
+            <q-btn class="btn-clear" @click="voltar" label="Voltar" />
+            <q-btn class="btn-green" @click="avancar" :label="menu.dadosgrupo ? 'Avançar' : 'Incluir Grupo'" />
         </div>
     </section>
+    <ModalViaSelecaoComponent v-if="viaSelecao" @fechar-modal="fecharModal('viaSelecao')"></ModalViaSelecaoComponent>
+    <ModalCopiaColaComponent v-if="copiaCola" @fechar-modal="fecharModal('copiaCola')"></ModalCopiaColaComponent>
 </q-page>
 </template>
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useQuasar } from 'quasar';
+import ModalViaSelecaoComponent from 'src/components/ModalViaSelecaoComponent.vue';
+import ModalCopiaColaComponent from 'src/components/ModalCopiaColaComponent.vue';
+import { useRouter } from 'vue-router';
 
 const $q = useQuasar()
+const router = useRouter()
 
 const menu = ref({
     dadosgrupo: true,
     transacoes: false,
 })
+
+// modais
+const viaSelecao = ref(false)
+const copiaCola = ref(false)
 
 const categoriaGrupo = ref(null)
 const nomeGrupo = ref('')
@@ -105,6 +115,28 @@ const tipoConta = ref({
     cj: false,
     cc: false
 })
+
+function openModal (modal: string) {
+    switch (modal) {
+        case 'viaSelecao':
+            viaSelecao.value = true
+            break
+            case 'copiaCola':
+                copiaCola.value = true
+            break
+    }
+}
+
+function fecharModal (modal: string) {
+    switch (modal) {
+        case 'viaSelecao':
+            viaSelecao.value = false
+            break
+        case 'copiaCola':
+            copiaCola.value = false
+            break
+    }
+}
 
 function checkboxTipoPessoa (tipo: string) {
     if (tipo == 'pf'){
@@ -137,8 +169,19 @@ const notify = (text: string) => {
         })
 }
 
-// tabela
-const incluir = () => {
+const voltar = () => {
+    switch (menu.value.dadosgrupo) {
+        case true:
+                router.push('gptransacao')
+            break
+        case false:
+            menu.value.dadosgrupo = true
+            menu.value.transacoes = false
+            break
+    }
+} 
+
+const avancar = () => {
     if(tipoPessoa.value.pf == false && tipoPessoa.value.pj == false ) {
         notify('Você deve selecionar ao menos um tipo de pessoa!')
         return 
@@ -152,17 +195,22 @@ const incluir = () => {
         nomeGrupo: nomeGrupo.value,
         statusGrupo: statusGrupo.value,
         tipoPessoa: tipoPessoa.value.pf == true ? 'Pessoa Física': 'Pessoa Jurídica',
-        tipoConta: tipoConta.value.cc == true ? 'Conta Corrente' : 'Conta Poupança'
+        tipoConta: tipoConta.value.cc == true ? 'Conta Corrente' : 'Conta Poupança',
+        transacoes: 'A definir'
     }
     if(validaObject(dadosGrupoObject, 1) && menu.value.dadosgrupo ) {
         menu.value.dadosgrupo = false
         menu.value.transacoes = true
         return
+    } else if (menu.value.transacoes && validaObject(dadosGrupoObject, 1)) {
+        // adicionar verificacao da tela 2
+        console.log(JSON.stringify(dadosGrupoObject))
+        alert('Incluiu\nObjeto no Console')
     }
-    alert('INCLUIU')
+
 }
 
-const validaObject = (incluirObject: any, tela: number) => {
+const validaObject = (incluirObject: any, _tela: number) => {
     if(
         incluirObject.categoriaGrupo == null || incluirObject.nomeGrupo == '' ||
         incluirObject.tipoPessoa == null || incluirObject.tipoConta == null 
@@ -170,130 +218,21 @@ const validaObject = (incluirObject: any, tela: number) => {
         notify('Preencha todos os Campos')
         return false
     }
+    // validar tela 2
+    // else if( condicao verificar tela 2) {
+        // return true
+    // }
     return true
 }
 
 const columns = [
-  {
-    name: 'desc',
-    required: true,
-    label: 'Dessert (100g serving)',
-    align: 'left',
-    field: (row: any) => row.name,
-    format: (val: any) => `${val}`,
-    sortable: true
-  },
-  { name: 'calories', align: 'center', label: 'Calories', field: 'calories', sortable: true },
-  { name: 'fat', label: 'Fat (g)', field: 'fat', sortable: true },
-  { name: 'carbs', label: 'Carbs (g)', field: 'carbs' },
-  { name: 'protein', label: 'Protein (g)', field: 'protein' },
-  { name: 'sodium', label: 'Sodium (mg)', field: 'sodium' },
-  { name: 'calcium', label: 'Calcium (%)', field: 'calcium', sortable: true, sort: (a: any, b:any) => parseInt(a, 10) - parseInt(b, 10) },
-  { name: 'iron', label: 'Iron (%)', field: 'iron', sortable: true, sort: (a:any, b:any) => parseInt(a, 10) - parseInt(b, 10) }
+  { required: true, name: 'nomeTransacao', align: 'left', label: 'Nome da Transação', field: 'nomeTransacao', sortable: true },
+  { name: 'codTransacao', label: 'Código da Transação', field: 'codTransacao', sortable: true },
+  { name: 'acoes', label: 'Ações', field: 'acoes' },
 ]
 
-const rows = [
-  {
-    name: 'Frozen Yogurt',
-    calories: 159,
-    fat: 6.0,
-    carbs: 24,
-    protein: 4.0,
-    sodium: 87,
-    calcium: '14%',
-    iron: '1%'
-  },
-  {
-    name: 'Ice cream sandwich',
-    calories: 237,
-    fat: 9.0,
-    carbs: 37,
-    protein: 4.3,
-    sodium: 129,
-    calcium: '8%',
-    iron: '1%'
-  },
-  {
-    name: 'Eclair',
-    calories: 262,
-    fat: 16.0,
-    carbs: 23,
-    protein: 6.0,
-    sodium: 337,
-    calcium: '6%',
-    iron: '7%'
-  },
-  {
-    name: 'Cupcake',
-    calories: 305,
-    fat: 3.7,
-    carbs: 67,
-    protein: 4.3,
-    sodium: 413,
-    calcium: '3%',
-    iron: '8%'
-  },
-  {
-    name: 'Gingerbread',
-    calories: 356,
-    fat: 16.0,
-    carbs: 49,
-    protein: 3.9,
-    sodium: 327,
-    calcium: '7%',
-    iron: '16%'
-  },
-  {
-    name: 'Jelly bean',
-    calories: 375,
-    fat: 0.0,
-    carbs: 94,
-    protein: 0.0,
-    sodium: 50,
-    calcium: '0%',
-    iron: '0%'
-  },
-  {
-    name: 'Lollipop',
-    calories: 392,
-    fat: 0.2,
-    carbs: 98,
-    protein: 0,
-    sodium: 38,
-    calcium: '0%',
-    iron: '2%'
-  },
-  {
-    name: 'Honeycomb',
-    calories: 408,
-    fat: 3.2,
-    carbs: 87,
-    protein: 6.5,
-    sodium: 562,
-    calcium: '0%',
-    iron: '45%'
-  },
-  {
-    name: 'Donut',
-    calories: 452,
-    fat: 25.0,
-    carbs: 51,
-    protein: 4.9,
-    sodium: 326,
-    calcium: '2%',
-    iron: '22%'
-  },
-  {
-    name: 'KitKat',
-    calories: 518,
-    fat: 26.0,
-    carbs: 65,
-    protein: 7,
-    sodium: 54,
-    calcium: '12%',
-    iron: '6%'
-  }
-]
+const rows = [{}]
+
 const initialPagination = {
         sortBy: 'desc',
         descending: false,

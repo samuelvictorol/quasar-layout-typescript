@@ -71,13 +71,13 @@
         </template>
       </q-table>
     </section>
+    <ModalStatusGrupoComponent
+      v-if="modalStatusGrupo"
+      :row="selectedRow"
+      @fechar-modal="fecharModal"
+      @alterar-status="alterarStatus"
+    ></ModalStatusGrupoComponent>
   </q-page>
-  <ModalStatusGrupoComponent
-    v-if="modalStatusGrupo"
-    :row="selectedRow"
-    @fechar-modal="fecharModal"
-    @alterar-status="alterarStatus"
-  ></ModalStatusGrupoComponent>
 </template>
 
 <script setup lang="ts">

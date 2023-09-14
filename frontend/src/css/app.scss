@@ -135,7 +135,7 @@ p, h1{
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 9999;
+    z-index: 9998;
     width: 100vw;
     height: 100vh;
     background-color: #009f7a2f;
@@ -151,5 +151,11 @@ p, h1{
 }
 
 .modal-body {
+    position: relative;
     background-color: #fff;
 }
+
+.low-opacity {
+    opacity: .7;
+}
+
