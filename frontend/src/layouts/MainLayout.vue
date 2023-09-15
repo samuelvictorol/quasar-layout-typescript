@@ -14,12 +14,12 @@
         <div class="q-mr-sm">
           <q-btn flat dense size="lg" icon="notifications" @click="toggleNotificationsModal" />
           <q-btn flat dense size="lg" icon="person" @click="toggleUserModal" />
-          <q-btn flat dense size="lg" icon="keyboard_arrow_down" @click="showDropdownMenu" />
+          <q-btn flat dense size="lg" icon="keyboard_arrow_down"  @click="toggleUserModal" />
         </div>
       </q-toolbar>
       <div class="trace-yellow"></div>
       <NotificacaoComponent v-if="notificacao" @mouseleave="toggleNotificationsModal"/>
-      <UserComponent v-if="user" @mouseleave="toggleUserModal"/>
+      <UserComponent v-if="user"/>
     </q-header>
     <q-drawer
       v-model="drawer"

@@ -25,7 +25,7 @@
               :height="290"
             />
             <q-card-section>
-              <div class="card-link text-h4">Parâmetros <img class="arrow-link" src="src/assets/icons/hm-imgArrow.svg" alt=""></div>
+              <div class="card-link text-h4" @click="navigate('parametros-tecnicos')">Parâmetros <img class="arrow-link" src="src/assets/icons/hm-imgArrow.svg" alt=""></div>
             </q-card-section>
           </q-card>
         </div>

@@ -35,7 +35,7 @@ function logout() {
     border-radius: 6px;
     position: absolute;
     top: 48px;
-    right: 75px;
+    right: 35px;
     width: 420px;
     background-color: #fff;
     color: #000;
